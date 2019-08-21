@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no,email=no,address=no">
+
+    <title>存款计算器(runoob.com)</title>
+    <style type="text/css">
+        .title1{
+            font-weight: bolder;
+            background: #f33144;
+            width: 300px;
+            height: 30px;
+            text-align:center;
+            color:white;
+            text-align:center;
+            border-style:solid none solid none;
+            border-width:1px;
+            border-color:#ADADAD;
+            margin : 0px 0px 0px 0px;
+        }
+        .title2{
+            font-weight: bolder;
+            background: #f33144;
+            width: 276px;
+            height: 30px;
+            text-align:center;
+            color:white;
+            text-align:center;
+            border-style:solid none solid none;
+            border-width:1px;
+            border-color:#ADADAD;
+            border-radius:5px;
+            margin : 20px 0px 0px 0px;
+
+        }
+        .p1{
+            font-family: SimHei;
+            font-weight: bolder;
+            width: 276px;
+            border-style:solid none none none;
+            border-width:1px;
+            border-color:#E0E0E0;
+            margin : 0px 0px 0px 0px;
+            padding: 12px;
+        }
+        .p2{
+            font-family: Microsoft JhengHei;
+            font-weight: bolder;
+        }
+        .p3{
+            width: 276px;
+            border-style:solid none none none;
+            border-width:1px;
+            border-color:#E0E0E0;
+            margin : 0px 0px 0px 0px;
+            padding: 12px;
+
+        }
+        .p4{
+            border-style:none;
+            margin : 0px 0px 0px 0px;
+            padding: 12px;
+        }
+        .p5{
+            width: 300px;
+            height: 9px;
+            background: #F0F0F0;
+        }
+        .p6{
+            width: 300px;
+            height: 9px;
+            background: #F0F0F0;
+            border-style:solid none none none;
+            border-width:1px;
+            border-color:#E0E0E0;
+        }
+        .p7{
+            width: 300px;
+            height: 110px;
+            background: #F0F0F0;
+            border-style:none none none none;
+            border-width:1px;
+            border-color:#E0E0E0;
+        }
+
+    </style>
+
+</head>
+<body>
+<button class = "title1" disabled>存款计算器：</button>
+
+<div class = "p5" >
+</div>
+<p class = "p1"><img src="icon.jpg"  alt="图片"  height="13" width="8"/>信息输入</p>
+<form name="myForm"  method="post">
+    <p class = "p3">存款种类:&nbsp;
+        <label style="border:none;height:20px;font-weight: bolder;font-size:15px;"><input type="radio" onclick="switchItem('huoqi')" name="radio" id="huoqi" value="0.003" />活期</label>
+        <label style="border:none;height:20px;font-weight: bolder;font-size:15px;"><input type="radio" onclick="switchItem('dingqi')" name="radio" id="dingqi" value="0.0135" />整存整取</label>
+
+        <!--<select name="ty" id="types" onchange="switchItem('dingqi')" required style="border:none;height:20px;font-weight: bolder;font-size:15px;">
+        <option id="huoqi" value="0.003"  >活&nbsp;&nbsp;期</option>
+        <option  id="dingqi" value="0.0135"  >整存整取</option>
+        </select>-->
+    </p>
+    <p id="qixian" class = "p3">存款期限:&nbsp;
+        <select name="ti" id="time"  onchange="printRate()" style.display="none" style="border:none;height:20px;font-weight: bolder;font-size:15px;" >
+            <option value="3">三个月</option>
+            <option value="6">六个月</option>
+            <option value="12">一年</option>
+            <option value="24">二年</option>
+            <option value="36">三年</option>
+            <option value="60">五年</option>
+        </select>
+    </p>
+    <p id="qicun" class = "p3">起存日期:
+        <input type="date" name="bday" id="beginDay" required  style="border:none;height:20px;font-weight: bolder;font-size:15px;"/></p>
+
+    <p id="jieshu" class = "p3">结束日期:
+        <input type="date" name="eday" id="endDay" required style="border:none;height:20px;font-weight: bolder;font-size:15px;"/></p>
+
+    <p class = "p3">年利率:&nbsp;&nbsp;&nbsp;<span  class = "p2" id="rate"></span> </p>
+    <p class = "p3">存款金额:
+        <input type="number" name="lixi" id="number" placeholder="单击此处输入存款金额" AUTOCOMPLETE="OFF" style="border:none;height:20px;font-size:15px;
+	" required></p>
+</form>
+
+<div class = "p6" >
+</div>
+<p class = "p1"><img src="icon.jpg"  alt="图片"  height="13" width="8"/>计算结果 </p>
+<span id="result"></span>
+<p class = "p3">存款利息:<span class = "p2" id="result1"></span></p>
+<p class = "p3">本息合计:<span class = "p2" id="result2"></span></p>
+
+
+<div class = "p7" align="center">
+    <button class = "title2" onclick="calculate()">计算利息：</button>
+</div>
+<script src="https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js">
+</script>
+
+<script>
+    //$("#types").selectmenu("refresh");
+    document.getElementById('time').style.display = 'none';
+    document.getElementById('qixian').style.display = 'none';
+    document.getElementById("rate").innerHTML= "0.30%";
+    //$("#rate").innerHTML= "0.30%";
+    $("#huoqi").prop("checked", true);
+    //alert($("#huoqi").prop("checked"));
+
+    $("#beginDay").bind("input propertychange",function(onchange){
+        var date=($("#beginDay").val());
+        $("#endDay").attr("min",date);
+    });
+    $("#endDay").bind("input propertychange",function(onchange){
+        var date=($("#endDay").val());
+        $("#beginDay").attr("max",date);
+    });
+
+    $("#number").bind("input propertychange",function(onchange){
+        var num=($("#number").val());
+        if( Number(num) > 100000000000000000){
+            alert("存款金额过大！");
+        }
+    });
+    function calculateRate(){
+        var lilv = 0;
+        var	saveDay = Number($("#time").val());
+        switch(saveDay){
+            case 3:
+                lilv = 0.0135;
+                break;
+            case 6:
+                lilv = 0.0155;
+                break;
+            case 12:
+                lilv = 0.0175;
+                break;
+            case 24:
+                lilv = 0.0225;
+                break;
+            case 36:
+                lilv = 0.0275;
+                break;
+            case 60:
+                lilv = 0.0275;
+                break;
+            default:
+                lilv = 0.0135;
+        }
+        return lilv;
+    }
+    function printRate(){
+        var lilv = calculateRate();
+        //alert (lilv);
+        document.getElementById("rate").innerHTML= (lilv * 100).toFixed(2)+"%" ;
+    }
+    function switchItem(tag){
+        var bday = document.getElementById('beginDay');
+        var eday = document.getElementById('endDay');
+        var ti = document.getElementById('time');
+        if(tag =='huoqi'){
+            bday.style.display = '';
+            eday.style.display = '';
+            ti.style.display = 'none';
+            document.getElementById('qixian').style.display = 'none';
+            document.getElementById('qicun').style.display = '';
+            document.getElementById('jieshu').style.display = '';
+            document.getElementById("rate").innerHTML= "0.30%";
+        }
+        else{
+
+            bday.style.display = 'none';
+            eday.style.display = 'none';
+            ti.style.display = '';
+            printRate();
+            document.getElementById('qixian').style.display = '';
+            document.getElementById('qicun').style.display = 'none';
+            document.getElementById('jieshu').style.display = 'none';
+        }
+        document.getElementById("result1").innerHTML="";
+        document.getElementById("result2").innerHTML="";
+        //document.getElementById("rate").innerHTML="";
+    }
+    function calculate(){
+        var beginDate = new Date($("#beginDay").val())
+        var endDate = new Date($("#endDay").val())
+        var benjin = Number((document.getElementById('number').value));
+        //alert(document.getElementById('number').value);
+        var first = document.getElementById('number').value;
+        //afterdot = (first.split(".")[1]);
+        var dot = 0;
+        if (first.indexOf(".") != -1){
+            dot = (first.split(".")[1].length);
+        }
+        var	lilv = $("#types").val();
+        //alert(lilv);
+        lilv = Number(lilv);
+        var saveTime = endDate.getTime() - beginDate.getTime();
+        var saveDay = Math.ceil(saveTime / (1000 * 60 * 60 * 24));
+        //alert(typeof(beginDate));
+        var lixi =  benjin * lilv * saveDay / 360;
+        lixi = Number(lixi.toFixed(2));
+
+        var benxi = (benjin + lixi).toFixed(2);
+        if($("#types").val() == "0.003"){
+            if(isNaN(beginDate)||isNaN(endDate)){
+                alert ("请输入日期!");
+                return;
+            }
+        }
+        else{
+            saveDay = Number($("#time").val());
+            lilv = calculateRate();
+            lixi = Number((benjin * lilv * saveDay / 12).toFixed(2));
+            benxi = (benjin + lixi).toFixed(2);
+        }
+
+        if( typeof(benjin) != "number" || benjin == 0 || benjin < 0.01 || dot > 2 || first[0] == '0' ){
+            alert ("本金输入错误或为0!");
+            document.getElementById("result1").innerHTML=(0).toFixed(2);
+            document.getElementById("result2").innerHTML=(0).toFixed(2);
+            return;
+        }
+
+        //benjin = ($("#number").val())
+        document.getElementById("result1").innerHTML = (lixi).toFixed(2);
+        document.getElementById("result2").innerHTML = benxi;
+        document.getElementById("rate").innerHTML = (lilv * 100).toFixed(2) +"%" ;
+
+    }
+
+
+</script>
+
+</body>
+</html>
