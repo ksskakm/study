@@ -9,7 +9,8 @@ public class Exceptiondemo {
         System.out.println("num="+num);//打印获取到的元素值
     }
 }
-@Deprecated
+
+
 class ArrayTools{
     //通过给定的数组，返回给定的索引对应的元素值。
     public static int getElement(int[] arr,int index) {

@@ -1,6 +1,6 @@
 package test3;
 
-public class Maopao {
+public class Bubble {
 
     public static void main(String[] args) {
         int[] arr={10,7,2,4,7,62,3,4,21,1,8,9,19};

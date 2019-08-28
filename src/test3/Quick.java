@@ -1,7 +1,7 @@
 package test3;
 
 public class Quick {
-    public static void quicksort(int[] arr,int low,int high){
+    public  void quicksort(int[] arr,int low,int high){
         int i,j,temp,t;
         if(low>high) {
             return;
@@ -33,7 +33,7 @@ public class Quick {
     public static void main(String[] args) {
         int[] arr={10,7,2,14,7,62,3,4,2,1,8,9,19};
         System.out.println("开始排序");
-        quicksort(arr,0,arr.length-1);
+        new Quick().quicksort(arr,0,arr.length-1);
         for(int i=0;i<arr.length;i++){
             System.out.println(arr[i]);
         }
