@@ -1,4 +1,4 @@
 # study
 learn simple java
 
-private java sutdy and practice
+private java practice
